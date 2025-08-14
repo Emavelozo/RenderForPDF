@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
     shared-mime-info \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip install flask weasyprint
+# Install Python dependencies with specific versions
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir Flask==2.3.3 WeasyPrint==60.2
 
 # Create app directory
 WORKDIR /app
