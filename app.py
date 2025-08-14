@@ -1,5 +1,5 @@
 from flask import Flask, request, send_file
-from weasyprint import HTML, CSS
+from weasyprint import HTML
 import io
 import json
 
@@ -15,7 +15,7 @@ def convert_html_to_pdf():
         if not html_content:
             return {'error': 'HTML content is required'}, 400
         
-        # Convert HTML to PDF
+        # Convert HTML to PDF using the correct WeasyPrint API
         html_doc = HTML(string=html_content)
         pdf_bytes = html_doc.write_pdf()
         
