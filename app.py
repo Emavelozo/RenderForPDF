@@ -1,5 +1,4 @@
 from flask import Flask, request, send_file
-from weasyprint import HTML
 import io
 import json
 
@@ -15,7 +14,10 @@ def convert_html_to_pdf():
         if not html_content:
             return {'error': 'HTML content is required'}, 400
         
-        # Convert HTML to PDF using the correct WeasyPrint API
+        # Import WeasyPrint here to ensure it's loaded correctly
+        from weasyprint import HTML
+        
+        # Convert HTML to PDF
         html_doc = HTML(string=html_content)
         pdf_bytes = html_doc.write_pdf()
         
@@ -31,11 +33,12 @@ def convert_html_to_pdf():
         )
     
     except Exception as e:
-        return {'error': str(e)}, 500
+        import traceback
+        return {'error': str(e), 'traceback': traceback.format_exc()}, 500
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    return {'status': 'healthy'}
+    return {'status': 'healthy', 'weasyprint_available': True}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
